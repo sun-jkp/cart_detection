@@ -1,0 +1,8 @@
+/venv
+/__pycache__
+/best_ncnn_model
+*.torchscript
+/intern
+/code
+payload.json
+*.pt
