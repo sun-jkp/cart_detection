@@ -6,7 +6,8 @@ from ultralytics import YOLO
 
 class ParkingStationDetector:
     # def __init__(self, image_path, model_path, json_path, class_names):
-    def __init__(self, model_path, json_path, class_names):
+    # def __init__(self, model_path, json_path, class_names):
+    def __init__(self, model_path, class_names):
         # Load image
         # self.image = cv2.imread(image_path)
         # self.image = cv2.resize(self.image, (640, 480))
@@ -18,12 +19,9 @@ class ParkingStationDetector:
         # Class names for detection
         self.class_names = class_names
         
-        # Load parking slots from JSON
-        with open(json_path, 'r') as f:
-            self.parking_slots = json.load(f)
         
         # self.slot_polygons = []
-        self.load_parking_slots()
+        # self.load_parking_slots()
             
         # IoU threshold for matching cart to slot
         self.iou_threshold = 0.1
@@ -31,7 +29,14 @@ class ParkingStationDetector:
         # Detection results (after predict)
         self.detections = []
         
-    def load_parking_slots(self):
+    def load_parking_slots(self, parking_slots):
+        if isinstance(parking_slots, str):
+            # Load parking slots from JSON
+            with open(parking_slots, 'r') as f:
+                self.parking_slots = json.load(f)
+        else:
+            self.parking_slots = parking_slots
+            
         self.slot_polygons = []
         for slot in self.parking_slots['slots']:
             points = slot['points']
@@ -44,7 +49,7 @@ class ParkingStationDetector:
             })
         
     def detect_carts(self, img):
-        self.load_parking_slots()
+        # self.load_parking_slots()
         self.image = None
         self.detections = []
         if(img is str):
@@ -127,7 +132,8 @@ class ParkingStationDetector:
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-    def run(self, img, show=False):
+    def run(self, img, parking_slots, show=False):
+        self.load_parking_slots(parking_slots)
         self.detect_carts(img)
         self.match_carts_to_slots()
         self.draw_results()
