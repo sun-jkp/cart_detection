@@ -37,7 +37,7 @@ while True:
         # cv2.imshow("Live from SR-2000W", input_img)
         # Run detection
         detector.run(input_img_copy, parking_station_1_path)
-        img = detector.get_result()
+        img, data = detector.get_results()
         cv2.imshow('Parking Station Detection', img)
         # time.sleep(1)
         

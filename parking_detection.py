@@ -139,6 +139,7 @@ class ParkingStationDetector:
         self.draw_results()
         if(show):
             self.show_result()
+    
         
-    def get_result(self):
-        return self.img_result
+    def get_results(self):
+        return self.img_result, self.slot_polygons
